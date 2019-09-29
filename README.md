@@ -39,7 +39,7 @@ python3 setup.py install
 
 * **Insert num on every index** — Creates new subdomain levels by inserting the numbers between existing levels. `foo.bar.example.com` -> `1.foo.bar.example.com`, `foo.1.bar.example.com`, `01.foo.bar.example.com`, `...`
 
-* **Increase/Decrease num found** — If number is found in an existing subdomain, increase/decrease this number without any other alteration. `foo01.example.com` -> `foo02.example.com`, `foo03.example.com`, `...`
+* **Increase/Decrease num found** — *(In development)* If number is found in an existing subdomain, increase/decrease this number without any other alteration. `foo01.example.com` -> `foo02.example.com`, `foo03.example.com`, `...`
 
 * **Prepend word on every index** — On every subdomain level, prepend existing content with `WORD` and `WORD-`. `foo.example.com` -> `stagefoo.example.com`, `stage-foo.example.com`
 
