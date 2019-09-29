@@ -1,0 +1,3 @@
+include requirements.txt LICENSE
+include dnsgen/words.txt
+

@@ -1,0 +1,3 @@
+Click==7.0
+tldextract==2.2.0
+
