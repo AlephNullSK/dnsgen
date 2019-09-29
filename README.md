@@ -1,6 +1,6 @@
 # :cyclone: dnsgen (DNS generator)
 
-This tools generates combination of domain names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to [Techniques](#techniques) section to learn more.
+This tool generates a combination of domain names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to [Techniques](#techniques) section to learn more.
 
 `dnsgen` is very similar to [altdns](https://github.com/infosec-au/altdns). It does not contain DNS resolver. You should use [massdns](https://github.com/blechschmidt/massdns) for DNS resolution.
 
@@ -21,11 +21,11 @@ python3 setup.py install
 
 ## Usage
 
-```$ dnsgen domains.txt``` (`domains.txt` contains list of active domain names)
+```$ dnsgen domains.txt``` (`domains.txt` contains a list of active domain names)
 
 * `-l` / `--wordlen`: minimum size of custom words to be extracted
 * `-w` / `--wordlist`: path to custom wordlist
-* `filename`: required parameter for input list of domains. The input file should contain domain names separated by newline characted (`\n`). You can also use STDIN as input method, providing `-` to this argument.
+* `filename`: required parameter for an input list of domains. The input file should contain domain names separated by newline character (`\n`). You can also use STDIN as an input method, providing `-` to this argument.
 
 **Combination with massdns:**
 
@@ -45,9 +45,9 @@ python3 setup.py install
 
 * **Append word on every index** — On every subdomain level, append existing content with `WORD` and `WORD-`. `foo.example.com` -> `foostage.example.com`, `foo-stage.example.com`
 
-* **Replace word with word** — If word longer than 3 is found in existing subdomain, replace it with other words from the wordlist. *(If we have more words than one in our wordlist)*. `stage.foo.example.com` -> `otherword.foo.example.com`, `anotherword.foo.example.com`, `...`
+* **Replace the word with word** — If word longer than 3 is found in an existing subdomain, replace it with other words from the wordlist. *(If we have more words than one in our wordlist)*. `stage.foo.example.com` -> `otherword.foo.example.com`, `anotherword.foo.example.com`, `...`
 
-* **Extract custom words** — Extend the wordlist based on target's domain naming conventions. Such words are either whole subdomain levels, or `-` is used for split on some subdomain level. For instance `mapp1-current.datastream.example.com` has `mapp1`, `current`, `datastream` words. To prevent the overflow, user defined *word length* is used for word extraction. The default value is set to **6**. This means that only words strictly longer than **5** characters are included (from the previous example, `mapp1` does not satisfy this condition). 
+* **Extract custom words** — Extend the wordlist based on target's domain naming conventions. Such words are either whole subdomain levels, or `-` is used for a split on some subdomain level. For instance `mapp1-current.datastream.example.com` has `mapp1`, `current`, `datastream` words. To prevent the overflow, user-defined *word length* is used for word extraction. The default value is set to **6**. This means that only words strictly longer than **5** characters are included (from the previous example, `mapp1` does not satisfy this condition). 
 
 ## Resources
 
