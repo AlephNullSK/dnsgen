@@ -1,6 +1,6 @@
 # :cyclone: dnsgen (DNS generator)
 
-This tools generates combination of domain names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to `Techniques` section to learn more.
+This tools generates combination of domain names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to [Techniques](#techniques) section to learn more.
 
 `dnsgen` is very similar to [altdns](https://github.com/infosec-au/altdns). It does not contain DNS resolver. You should use [massdns](https://github.com/blechschmidt/massdns) for DNS resolution.
 
@@ -52,7 +52,7 @@ python3 setup.py install
 ## Resources
 
 - [Subdomain Enumeration: 2019 Workflow](https://0xpatrik.com/subdomain-enumeration-2019/)
-- [Subdomain Enumeration: Doing it a Bit Smarter](https://0xpatrik.com)
+- [Subdomain Enumeration: Doing it a Bit Smarter](https://0xpatrik.com/subdomain-enumeration-smarter/)
 
 ## TO DO
 
