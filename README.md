@@ -1,8 +1,10 @@
 # :cyclone: dnsgen (DNS generator)
 
-This tools generates combination of domains names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to `Techniques` section to learn more.
+This tools generates combination of domain names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to `Techniques` section to learn more.
 
 `dnsgen` is very similar to [altdns](https://github.com/infosec-au/altdns). It does not contain DNS resolver. You should use [massdns](https://github.com/blechschmidt/massdns) for DNS resolution.
+
+![dnsgen](https://0xpatrik.com/content/images/2019/09/dnsgen-1.png)
 
 ## Installation
 
@@ -23,7 +25,7 @@ python3 setup.py install
 
 * `-l` / `--wordlen`: minimum size of custom words to be extracted
 * `-w` / `--wordlist`: path to custom wordlist
-* `filename`: required parameter for input list of domains. `-` stands for STDIN
+* `filename`: required parameter for input list of domains. The input file should contain domain names separated by newline characted (`\n`). You can also use STDIN as input method, providing `-` to this argument.
 
 **Combination with massdns:**
 
