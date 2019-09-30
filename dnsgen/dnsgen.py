@@ -204,10 +204,9 @@ def generate(domains, wordlist=None, wordlen=6):
 	WORDS += extract_custom_words(domains, wordlen)
 	WORDS = list(set(WORDS))
 
-	permutations = []
-
 	for domain in set(domains):
 		parts = partiate_domain(domain)
+		permutations = []
 		permutations += insert_word_every_index(parts)
 		permutations += insert_num_every_index(parts)
 		permutations += increase_num_found(parts)
@@ -215,5 +214,5 @@ def generate(domains, wordlist=None, wordlen=6):
 		permutations += prepend_word_every_index(parts)
 		permutations += append_word_every_index(parts)
 		permutations += replace_word_with_word(parts)
-	
-	return list(set(permutations))
+		for perm in permutations:
+			yield perm
