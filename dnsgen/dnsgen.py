@@ -214,5 +214,6 @@ def generate(domains, wordlist=None, wordlen=6):
 		permutations += prepend_word_every_index(parts)
 		permutations += append_word_every_index(parts)
 		permutations += replace_word_with_word(parts)
+		
 		for perm in permutations:
 			yield perm

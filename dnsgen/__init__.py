@@ -1,0 +1,1 @@
+from . dnsgen import generate

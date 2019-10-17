@@ -10,7 +10,7 @@ This tool generates a combination of domain names from the provided input. Combi
 
 ```pip3 install dnsgen```
 
-..or from GitHub:
+..or from GitHub directly:
 
 ```
 git clone https://github.com/ProjectAnte/dnsgen
