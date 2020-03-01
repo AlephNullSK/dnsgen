@@ -1,8 +1,17 @@
+dev
+test
+stg
+svc
+staging
+stage
+prod
+secure
+trial
+admin
 acc
 account
 accounting
 adm
-admin
 administrator
 administrators
 admins
@@ -37,7 +46,6 @@ control
 cvs
 data
 demo
-dev
 developer
 development
 devops
@@ -57,6 +65,7 @@ europe
 europewest
 events
 ext
+file
 firewall
 frontpage
 fw
@@ -107,7 +116,6 @@ php
 preview
 priv
 private
-prod
 production
 productions
 profile
@@ -127,7 +135,6 @@ s3
 sandbox
 scm
 search
-secure
 security
 server
 service
@@ -135,17 +142,12 @@ signed
 skins
 ssl
 staff
-stage
-staging
 static
-stg
 support
-svc
 svcgateway
 swagger
 system
 team
-test
 testbed
 testing
 tomcat
@@ -153,7 +155,6 @@ toolbar
 tpe
 train
 training
-trial
 twitch
 us
 v

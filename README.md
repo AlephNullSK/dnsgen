@@ -25,6 +25,7 @@ python3 setup.py install
 
 * `-l` / `--wordlen`: minimum size of custom words to be extracted
 * `-w` / `--wordlist`: path to custom wordlist
+* `-f` / `--fast`: Generate lower amount of domains with most probable words only
 * `filename`: required parameter for an input list of domains. The input file should contain domain names separated by newline character (`\n`). You can also use STDIN as an input method, providing `-` to this argument.
 
 **Combination with massdns:**

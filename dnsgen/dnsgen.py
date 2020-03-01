@@ -8,7 +8,18 @@ import tldextract
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 WORDS = None
-NUM_COUNT = 5
+NUM_COUNT = 2
+
+def create_registrar():
+	registry = []
+	def registrar(func):
+		registry.append(func)
+		return func
+
+	registrar.members = registry
+	return registrar
+
+PERMUTATOR = create_registrar()
 
 def partiate_domain(domain):
 	'''
@@ -25,6 +36,7 @@ def partiate_domain(domain):
 
 	return [p for p in parts if p]
 
+@PERMUTATOR
 def insert_word_every_index(parts):
 	'''
 	Create new subdomain levels by inserting the words between existing levels
@@ -43,6 +55,8 @@ def insert_word_every_index(parts):
 
 	return domains
 
+# TODO: optimize
+#@PERMUTATOR
 def insert_num_every_index(parts):
 	'''
 	Create new subdomain levels by inserting the numbers between existing levels
@@ -55,18 +69,19 @@ def insert_num_every_index(parts):
 
 	for num in range(NUM_COUNT):
 		for i in range(len(parts) - 1):
-			# single digit
+			# Single digit
 			tmp_parts = parts[:-2]
 			tmp_parts.insert(i, str(num))
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
-			# double digit
+			# Double digit
 			tmp_parts = parts[:-2]
 			tmp_parts.insert(i, '{:0>2}'.format(num))
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
 	return domains
 
+@PERMUTATOR
 def increase_num_found(parts):
 	'''
 	If number is found in existing subdomain, increase this number without any other alteration
@@ -77,17 +92,18 @@ def increase_num_found(parts):
 	# test01.example.com -> test02.example.com, test03.example.com, ...
 
 	domains = []
+	parts_joined = '.'.join(parts[:-2])
+	digits = re.findall(r'\d{1,3}', parts_joined)
 
-#   indexes = [c.isdigit() for c in '.'.join(parts[:-2])]
-#
-#   for i in [j for j, k in enumerate(indexes) if k]:
-#        tmp_domain = list('.'.join(parts[:-2]))
-#        for m in range(5):
-#            tmp_domain[i] = str(int(tmp_domain[i]) + 1 + m)
-#            domains.append('{}.{}'.format(''.join(tmp_domain), '.'.join(parts[-2:])))
+	for d in digits:
+		for m in range(NUM_COUNT):
+			replacement = str(int(d) + 1 + m).zfill(len(d))
+			tmp_domain = parts_joined.replace(d, replacement)
+			domains.append('{}.{}'.format(tmp_domain, '.'.join(parts[-2:])))
    
 	return domains
 
+@PERMUTATOR
 def decrease_num_found(parts):
 	'''
 	If number is found in existing subdomain, decrease this number without any other alteration
@@ -97,8 +113,23 @@ def decrease_num_found(parts):
 	# test4.example.com -> test3.example.com, test2.example.com, ...
 	# test04.example.com -> test03.example.com, test02.example.com, ...
 
-	return []
+	domains = []
+	parts_joined = '.'.join(parts[:-2])
+	digits = re.findall(r'\d{1,3}', parts_joined)
 
+	for d in digits:
+		for m in range(NUM_COUNT):
+			new_digit = (int(d) - 1 - m)
+			if new_digit < 0:
+				break
+
+			replacement = str(new_digit).zfill(len(d))
+			tmp_domain = parts_joined.replace(d, replacement)
+			domains.append('{}.{}'.format(tmp_domain, '.'.join(parts[-2:])))
+   
+	return domains
+
+@PERMUTATOR
 def prepend_word_every_index(parts):
 	'''
 	On every subdomain level, prepend existing content with `WORD` and `WORD-`
@@ -124,6 +155,7 @@ def prepend_word_every_index(parts):
 
 	return domains
 
+@PERMUTATOR
 def append_word_every_index(parts):
 	'''
 	On every subdomain level, append existing content with `WORD` and `WORD-`
@@ -137,18 +169,19 @@ def append_word_every_index(parts):
 
 	for w in WORDS:
 		for i in range(len(parts[:-2])):
-			# append normal
+			# Append normal
 			tmp_parts = parts[:-2]
 			tmp_parts[i] = '{}{}'.format(tmp_parts[i], w)
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
-			#append with dash
+			# Append with dash
 			tmp_parts = parts[:-2]
 			tmp_parts[i] = '{}-{}'.format(tmp_parts[i], w)
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
 	return domains
 
+@PERMUTATOR
 def replace_word_with_word(parts):
 	'''
 	If word longer than 3 is found in existing subdomain, replace it with other words from the dictionary
@@ -192,7 +225,7 @@ def extract_custom_words(domains, wordlen):
 
 	return list(valid_tokens)
 
-def generate(domains, wordlist=None, wordlen=6):
+def generate(domains, wordlist=None, wordlen=6, fast=False):
 	# generate_markov_matrix()
 	global WORDS
 
@@ -201,19 +234,15 @@ def generate(domains, wordlist=None, wordlen=6):
 	else:
 		WORDS = open(wordlist).read().splitlines()
 
+	if fast:
+		WORDS = WORDS[:10]
+	
 	WORDS += extract_custom_words(domains, wordlen)
 	WORDS = list(set(WORDS))
 
 	for domain in set(domains):
 		parts = partiate_domain(domain)
-		permutations = []
-		permutations += insert_word_every_index(parts)
-		permutations += insert_num_every_index(parts)
-		permutations += increase_num_found(parts)
-		permutations += decrease_num_found(parts)
-		permutations += prepend_word_every_index(parts)
-		permutations += append_word_every_index(parts)
-		permutations += replace_word_with_word(parts)
-		
-		for perm in permutations:
-			yield perm
+
+		for perm in PERMUTATOR.members:
+			for possible_domain in perm(parts):
+				yield possible_domain
