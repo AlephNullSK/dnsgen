@@ -15,7 +15,7 @@ URL = 'https://github.com/me/myproject'
 EMAIL = 'pato.hudak@gmail.com'
 AUTHOR = 'Patrik Hudak'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '1.0.3'
+VERSION = '1.0.4'
 
 REQUIRED = ['Click', 'tldextract']
 EXTRAS = {}

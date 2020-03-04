@@ -1,14 +1,13 @@
-# python3
+# coding=utf-8
 
 import itertools
-import os
+import pathlib
 import re
 
 import tldextract
 
-HERE = os.path.abspath(os.path.dirname(__file__))
 WORDS = None
-NUM_COUNT = 2
+NUM_COUNT = 3
 
 def create_registrar():
 	registry = []
@@ -19,7 +18,11 @@ def create_registrar():
 	registrar.members = registry
 	return registrar
 
+# Create two types of permutator classes
+# PERMUTATOR -> used as basic class, includes every possible permutator
+# FAST_PERMUTATOR -> used for quick enumerations, mainly for huge scopes
 PERMUTATOR = create_registrar()
+FAST_PERMUTATOR = create_registrar()
 
 def partiate_domain(domain):
 	'''
@@ -55,32 +58,7 @@ def insert_word_every_index(parts):
 
 	return domains
 
-# TODO: optimize
-#@PERMUTATOR
-def insert_num_every_index(parts):
-	'''
-	Create new subdomain levels by inserting the numbers between existing levels
-	'''
-
-	# foo.test.example.com ->   1.foo.test.example.com, foo.1.test.example.com, 
-	#                           foo.test.1.example.com, 01.foo.test.example.com, ...
-
-	domains = []
-
-	for num in range(NUM_COUNT):
-		for i in range(len(parts) - 1):
-			# Single digit
-			tmp_parts = parts[:-2]
-			tmp_parts.insert(i, str(num))
-			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
-
-			# Double digit
-			tmp_parts = parts[:-2]
-			tmp_parts.insert(i, '{:0>2}'.format(num))
-			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
-
-	return domains
-
+@FAST_PERMUTATOR
 @PERMUTATOR
 def increase_num_found(parts):
 	'''
@@ -103,6 +81,7 @@ def increase_num_found(parts):
    
 	return domains
 
+@FAST_PERMUTATOR
 @PERMUTATOR
 def decrease_num_found(parts):
 	'''
@@ -143,12 +122,12 @@ def prepend_word_every_index(parts):
 
 	for w in WORDS:
 		for i in range(len(parts[:-2])):
-			# prepend normal
+			# Prepend normal
 			tmp_parts = parts[:-2]
 			tmp_parts[i] = '{}{}'.format(w, tmp_parts[i])
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
-			# prepend with dash
+			# Prepend with dash
 			tmp_parts = parts[:-2]
 			tmp_parts[i] = '{}-{}'.format(w, tmp_parts[i])
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))     
@@ -169,18 +148,19 @@ def append_word_every_index(parts):
 
 	for w in WORDS:
 		for i in range(len(parts[:-2])):
-			# Append normal
+			# Append Normal
 			tmp_parts = parts[:-2]
 			tmp_parts[i] = '{}{}'.format(tmp_parts[i], w)
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
-			# Append with dash
+			# Append with Dash
 			tmp_parts = parts[:-2]
 			tmp_parts[i] = '{}-{}'.format(tmp_parts[i], w)
 			domains.append('{}.{}'.format('.'.join(tmp_parts), '.'.join(parts[-2:])))
 
 	return domains
 
+@FAST_PERMUTATOR
 @PERMUTATOR
 def replace_word_with_word(parts):
 	'''
@@ -189,6 +169,8 @@ def replace_word_with_word(parts):
 
 	# WORD1.1.foo.example.com -> WORD2.1.foo.example.com, WORD3.1.foo.example.com, 
 	#                            WORD4.1.foo.example.com, ...
+
+	# TODO: consider if the same word is found multiple times in one string
 
 	domains = []
 
@@ -217,32 +199,29 @@ def extract_custom_words(domains, wordlen):
 		tokens = set(itertools.chain(*[word.lower().split('-') for word in partition]))
 		tokens = tokens.union({word.lower() for word in partition})
 		for t in tokens:
-			# delete all numbers
-			t = re.sub(r'\d', '', t)
-
 			if len(t) >= wordlen:
 				valid_tokens.add(t)
 
-	return list(valid_tokens)
+	return valid_tokens
 
 def generate(domains, wordlist=None, wordlen=6, fast=False):
-	# generate_markov_matrix()
+	'''
+	Generate permutations from provided domains
+	'''
+
 	global WORDS
 
 	if wordlist is None:
-		WORDS = open(os.path.join(HERE, 'words.txt')).read().splitlines()
-	else:
-		WORDS = open(wordlist).read().splitlines()
-
+		wordlist = pathlib.Path(__file__).parent / 'words.txt'
+	
+	WORDS = open(wordlist).read().splitlines()
 	if fast:
 		WORDS = WORDS[:10]
 	
-	WORDS += extract_custom_words(domains, wordlen)
-	WORDS = list(set(WORDS))
+	WORDS = list(set(WORDS).union(extract_custom_words(domains, wordlen)))
 
 	for domain in set(domains):
 		parts = partiate_domain(domain)
-
-		for perm in PERMUTATOR.members:
+		for perm in (FAST_PERMUTATOR.members if fast else PERMUTATOR.members):
 			for possible_domain in perm(parts):
 				yield possible_domain
