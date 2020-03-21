@@ -19,6 +19,9 @@ from . import dnsgen
 def main(wordlen, wordlist, filename, fast):
     # read the input
     domains = filename.read().splitlines()
+    
+    # init wordlist
+    dnsgen.init_words(domains, wordlist, wordlen, fast=fast)
 
-    for r in dnsgen.generate(domains, wordlist, wordlen, fast=fast):
+    for r in dnsgen.generate(domains, fast=fast):
         click.echo(r)
