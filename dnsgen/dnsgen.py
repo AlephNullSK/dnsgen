@@ -11,7 +11,7 @@ NUM_COUNT = 3
 
 def create_registrar():
 	'''
-	Create registration decorator
+	Create function registration decorator
 	'''
 
 	registry = []
@@ -206,7 +206,7 @@ def extract_custom_words(domains, wordlen):
 
 	return valid_tokens
 
-def init_words(domains, wordlist=None, wordlen=6, fast=False):
+def init_words(domains, wordlist, wordlen, fast):
 	'''
 	Initiaze wordlist
 	'''
@@ -222,10 +222,13 @@ def init_words(domains, wordlist=None, wordlen=6, fast=False):
 	
 	WORDS = list(set(WORDS).union(extract_custom_words(domains, wordlen)))
 
-def generate(domains, fast):
+def generate(domains, wordlist=None, wordlen=5, fast=False, skip_init=False):
 	'''
 	Generate permutations from provided domains
 	'''
+
+	if not skip_init:
+		init_words(domains, wordlist, wordlen, fast)
 
 	for domain in set(domains):
 		parts = partiate_domain(domain)
