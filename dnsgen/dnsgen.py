@@ -208,7 +208,7 @@ def extract_custom_words(domains, wordlen):
 
 def init_words(domains, wordlist, wordlen, fast):
 	'''
-	Initiaze wordlist
+	Initialize wordlist
 	'''
 
 	global WORDS
