@@ -3,6 +3,7 @@
 import itertools
 import pathlib
 import re
+from fqdn import FQDN
 
 import tldextract
 
@@ -235,4 +236,5 @@ def generate(domains, wordlist=None, wordlen=5, fast=False, skip_init=False):
 
 		for perm in (FAST_PERMUTATOR.members if fast else PERMUTATOR.members):
 			for possible_domain in perm(parts):
-				yield possible_domain
+				if FQDN(possible_domain).is_valid:
+					yield possible_domain
