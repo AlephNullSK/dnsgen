@@ -68,3 +68,7 @@ these will generate a file with domains without "text polution".
 
 - Improve README
 - Tests
+
+## Author
+
+[Aleph Null s.r.o.](https://alephnull.sk)
