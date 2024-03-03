@@ -32,6 +32,11 @@ python3 setup.py install
 
 `$ cat domains.txt | dnsgen - | massdns -r /path/to/resolvers.txt -t A -o J --flush 2>/dev/null`
 
+** Get only resolved domains with massdns ** 
+`$ dnsgen hosts.txt >> dnsgen_wordlist.txt`
+`$ massdns -r ~/tools/massdns/lists/resolvers.txt -o S dnsgen_wordlist.txt | grep -e ' A ' | cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | rev | sort | uniq  > dnsgen_massdns_resolved`
+these will generate a file with domains without "text polution".
+
 ## Techniques
 
 *(For demo purposes, let's say that wordlist contains just one word: `stage`)*
