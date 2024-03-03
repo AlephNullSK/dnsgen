@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "dnsgen"
+repository = "https://github.com/AlephNullSK/dnsgen"
+version = "1.1.0"
+description = "Generates combination of domain names from the provided input."
+authors = ["Aleph Null s.r.o. <hello@alephnull.sk>"]
+license = "Aleph Null s.r.o. <hello@alephnull.sk>"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.13"
+click = "^8.1.7"
+tldextract = "^5.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+isort = "^5.13.2"
+pytest = "^8.0.2"
+flake8 = "^7.0.0"
+pre-commit = "^3.6.2"
+
+[tool.poetry.scripts]
+dnsgen = "dnsgen.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+line_length = 100
+lines_between_sections = 1

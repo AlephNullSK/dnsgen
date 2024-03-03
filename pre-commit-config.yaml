@@ -1,0 +1,36 @@
+repos:
+  - repo: 'https://github.com/pre-commit/pre-commit-hooks'
+    rev: v4.2.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-ast
+      - id: check-yaml
+  - repo: 'https://github.com/psf/black'
+    rev: 22.3.0
+    hooks:
+      - id: black
+        args:
+          - '--config=pyproject.toml'
+  - repo: 'https://github.com/hadialqattan/pycln'
+    rev: v1.2.5
+    hooks:
+      - id: pycln
+        args:
+          - '--config=pyproject.toml'
+  - repo: 'https://github.com/pycqa/isort'
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        files: \.(py)$
+        args:
+          - '--settings-path=pyproject.toml'
+  - repo: 'https://github.com/PyCQA/flake8'
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-comprehensions

@@ -1,3 +1,3 @@
 # python3
 
-from . dnsgen import generate
+from .dnsgen import generate

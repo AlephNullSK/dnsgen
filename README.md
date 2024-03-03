@@ -8,15 +8,14 @@ This tool generates a combination of domain names from the provided input. Combi
 
 ## Installation
 
-```pip3 install dnsgen```
+```python -m pip install dnsgen```
 
 ..or from GitHub directly:
 
 ```
-git clone https://github.com/ProjectAnte/dnsgen
-cd dnsgen
-pip3 install -r requirements.txt
-python3 setup.py install
+git clone https://github.com/AlephNullSK/dnsgen
+cd dnsgen/
+python -m poetry install
 ```
 
 ## Usage
@@ -26,15 +25,22 @@ python3 setup.py install
 * `-l` / `--wordlen`: minimum size of custom words to be extracted
 * `-w` / `--wordlist`: path to custom wordlist
 * `-f` / `--fast`: Generate lower amount of domains with most probable words only
+* `-o`, `--output`: Store results to the output file.
 * `filename`: required parameter for an input list of domains. The input file should contain domain names separated by newline character (`\n`). You can also use STDIN as an input method, providing `-` to this argument.
 
 **Combination with massdns:**
 
-`$ cat domains.txt | dnsgen - | massdns -r /path/to/resolvers.txt -t A -o J --flush 2>/dev/null`
+```
+$ cat domains.txt | dnsgen - | massdns -r /path/to/resolvers.txt -t A -o J --flush 2>/dev/null
+```
 
-** Get only resolved domains with massdns ** 
-`$ dnsgen hosts.txt >> dnsgen_wordlist.txt`
-`$ massdns -r ~/tools/massdns/lists/resolvers.txt -o S dnsgen_wordlist.txt | grep -e ' A ' | cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | rev | sort | uniq  > dnsgen_massdns_resolved`
+**Get only resolved domains with massdns**:
+
+```
+$ dnsgen hosts.txt >> dnsgen_wordlist.txt
+$ massdns -r ~/tools/massdns/lists/resolvers.txt -o S dnsgen_wordlist.txt | grep -e ' A ' | cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | rev | sort | uniq  > dnsgen_massdns_resolved
+```
+
 these will generate a file with domains without "text polution".
 
 ## Techniques
