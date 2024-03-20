@@ -13,7 +13,7 @@ click = "^8.1.7"
 tldextract = "^5.1.1"
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.2.0"
+black = "^24.3.0"
 isort = "^5.13.2"
 pytest = "^8.0.2"
 flake8 = "^7.0.0"
