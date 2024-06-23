@@ -41,7 +41,7 @@ $ dnsgen hosts.txt >> dnsgen_wordlist.txt
 $ massdns -r ~/tools/massdns/lists/resolvers.txt -o S dnsgen_wordlist.txt | grep -e ' A ' | cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | rev | sort | uniq  > dnsgen_massdns_resolved
 ```
 
-these will generate a file with domains without "text polution".
+these will generate a file with domains without "text pollution".
 
 ## Techniques
 
