@@ -1,4 +1,5 @@
 .DS_Store
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -7,7 +8,6 @@ __pycache__/
 
 # C extensions
 *.so
-
 # Distribution / packaging
 .Python
 env/

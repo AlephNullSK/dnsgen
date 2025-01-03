@@ -1,36 +1,115 @@
-[tool.poetry]
+[project]
 name = "dnsgen"
-repository = "https://github.com/AlephNullSK/dnsgen"
-version = "1.1.0"
-description = "Generates combination of domain names from the provided input."
-authors = ["Aleph Null s.r.o. <hello@alephnull.sk>"]
-license = "Aleph Null s.r.o. <hello@alephnull.sk>"
+version = "2.0.3"
+description = "Advanced DNS name permutation engine for security assessments"
 readme = "README.md"
+authors = [
+    { name = "Aleph Null s.r.o.", email = "hello@alephnull.sk" },
+]
+keywords = ["dns", "security", "pentest", "subdomain", "enumeration"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: Name Service (DNS)",
+    "Topic :: Security",
+    "Typing :: Typed",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.1.8",
+    "rich>=13.9.4",
+    "tldextract>=5.1.3",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10, <3.13"
-click = "^8.1.7"
-tldextract = "^5.1.1"
+[dependency-groups]
+dev = [
+    "mypy>=1.14.1",
+    "pre-commit>=4.0.1",
+    "pytest>=8.3.4",
+    "ruff>=0.8.5"
+]
 
-[tool.poetry.group.dev.dependencies]
-black = "^24.2.0"
-isort = "^5.13.2"
-pytest = "^8.0.2"
-flake8 = "^7.0.0"
-pre-commit = "^3.6.2"
+[project.urls]
+Homepage = "https://github.com/AlephNullSK/dnsgen"
+Repository = "https://github.com/AlephNullSK/dnsgen"
 
-[tool.poetry.scripts]
+[project.scripts]
 dnsgen = "dnsgen.cli:main"
 
+[tool.uv]
+package = true
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.black]
-line-length = 100
-target-version = ['py310']
+[tool.hatch.build.targets.wheel]
+only-include = ["dnsgen/"]
 
-[tool.isort]
-profile = "black"
-line_length = 100
-lines_between_sections = 1
+[tool.hatch.build.targets.wheel.sources]
+"dnsgen" = ""
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = [
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    "__init__.py",
+    "site-packages/",
+    "build",
+    "dist",
+    "venv"
+]
+
+[tool.ruff.lint]
+select = ["I", "E", "F", "YTT"]
+ignore = ["E203", "E266", "E501", "F403", "F401", "E731", "F841", "B905", "I001"]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "cli: marks tests as CLI tests"
+]
+
+filterwarnings = [
+    # Specific warnings
+    "ignore::pytest.PytestDeprecationWarning",
+    "ignore::pytest.PytestCollectionWarning",
+    "ignore:pkg_resources is deprecated as an API",
+    "ignore::DeprecationWarning",
+    "ignore::RuntimeWarning"
+]
+
+[tool.mypy]
+python_version = "3.12"
+show_error_codes = true
+exclude = [".venv/"]
+ignore_missing_imports = true
+disable_error_code = ["import-untyped"]

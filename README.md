@@ -1,74 +1,178 @@
-# :cyclone: dnsgen (DNS generator)
+# DNSGen 2.0 - Advanced DNS Name Permutation Engine 🚀
 
-This tool generates a combination of domain names from the provided input. Combinations are created based on wordlist. Custom words are extracted per execution. Refer to [Techniques](#techniques) section to learn more.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-`dnsgen` is very similar to [altdns](https://github.com/infosec-au/altdns). It does not contain DNS resolver. You should use [massdns](https://github.com/blechschmidt/massdns) for DNS resolution.
+DNSGen is a powerful and flexible DNS name permutation tool designed for security researchers and penetration testers. It generates intelligent domain name variations to assist in subdomain discovery and security assessments.
 
-![dnsgen](https://0xpatrik.com/content/images/2019/09/dnsgen-1.png)
+![DNSGen Banner](https://0xpatrik.com/content/images/2019/09/dnsgen-1.png)
 
-## Installation
+## ✨ Features
 
-```python -m pip install dnsgen```
+- 🔍 Smart domain name permutation engine
+- 🚄 Fast generation mode for quick assessments
+- 📝 Support for custom wordlists with comments
+- 🎯 Intelligent word extraction from existing domains
+- 🔧 Multiple permutation techniques
+- 🌍 Cloud-aware patterns and modern naming conventions
 
-..or from GitHub directly:
+## 🚀 Quick Start
 
-```
+### Installation
+
+```bash
+# Using pip
+python -m pip install dnsgen
+
+# Using uv (recommended for development)
 git clone https://github.com/AlephNullSK/dnsgen
 cd dnsgen/
-python -m poetry install
+python -m pip install uv
+uv sync
 ```
 
-## Usage
+### Basic Usage
 
-```$ dnsgen domains.txt``` (`domains.txt` contains a list of active domain names)
+```bash
+# Basic domain permutation
+dnsgen domains.txt
 
-* `-l` / `--wordlen`: minimum size of custom words to be extracted
-* `-w` / `--wordlist`: path to custom wordlist
-* `-f` / `--fast`: Generate lower amount of domains with most probable words only
-* `-o`, `--output`: Store results to the output file.
-* `filename`: required parameter for an input list of domains. The input file should contain domain names separated by newline character (`\n`). You can also use STDIN as an input method, providing `-` to this argument.
+# With custom wordlist and output file
+dnsgen -w custom_wordlist.txt -o results.txt domains.txt
 
-**Combination with massdns:**
+# Using fast mode for quick assessment
+dnsgen -f domains.txt
 
-```
-$ cat domains.txt | dnsgen - | massdns -r /path/to/resolvers.txt -t A -o J --flush 2>/dev/null
-```
-
-**Get only resolved domains with massdns**:
-
-```
-$ dnsgen hosts.txt >> dnsgen_wordlist.txt
-$ massdns -r ~/tools/massdns/lists/resolvers.txt -o S dnsgen_wordlist.txt | grep -e ' A ' | cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | rev | sort | uniq  > dnsgen_massdns_resolved
+# Pipe with massdns for resolution
+cat domains.txt | dnsgen - | massdns -r resolvers.txt -t A -o J --flush 2>/dev/null
 ```
 
-these will generate a file with domains without "text polution".
+## 🛠️ Permutation Techniques
 
-## Techniques
+DNSGen 2.0 implements multiple sophisticated permutation techniques:
 
-*(For demo purposes, let's say that wordlist contains just one word: `stage`)*
+### Core Permutators
 
-* **Insert word on every index** — Creates new subdomain levels by inserting the words between existing levels. `foo.example.com` -> `stage.foo.example.com`, `foo.stage.example.com`
+1. **Word Insertion** 
+   - Inserts words between domain levels
+   - Example: `api.example.com` → `staging.api.example.com`
 
-* **Increase/Decrease num found** — *(In development)* If number is found in an existing subdomain, increase/decrease this number without any other alteration. `foo01.example.com` -> `foo02.example.com`, `foo03.example.com`, `...`
+2. **Number Manipulation**
+   - Intelligently modifies existing numbers
+   - Example: `api2.example.com` → `api1.example.com`, `api3.example.com`
 
-* **Prepend word on every index** — On every subdomain level, prepend existing content with `WORD` and `WORD-`. `foo.example.com` -> `stagefoo.example.com`, `stage-foo.example.com`
+3. **Word Affixing**
+   - Prepends/appends words to levels
+   - Example: `api.example.com` → `devapi.example.com`, `api-dev.example.com`
 
-* **Append word on every index** — On every subdomain level, append existing content with `WORD` and `WORD-`. `foo.example.com` -> `foostage.example.com`, `foo-stage.example.com`
+### Cloud & Modern Infrastructure Permutators
 
-* **Replace the word with word** — If word longer than 3 is found in an existing subdomain, replace it with other words from the wordlist. *(If we have more words than one in our wordlist)*. `stage.foo.example.com` -> `otherword.foo.example.com`, `anotherword.foo.example.com`, `...`
+4. **Cloud Provider Patterns**
+   - Adds cloud-specific naming patterns
+   - Example: `example.com` → `api-aws.example.com`, `storage-azure.example.com`
 
-* **Extract custom words** — Extend the wordlist based on target's domain naming conventions. Such words are either whole subdomain levels, or `-` is used for a split on some subdomain level. For instance `mapp1-current.datastream.example.com` has `mapp1`, `current`, `datastream` words. To prevent the overflow, user-defined *word length* is used for word extraction. The default value is set to **6**. This means that only words strictly longer than **5** characters are included (from the previous example, `mapp1` does not satisfy this condition). 
+5. **Region Prefixes**
+   - Adds geographical region patterns
+   - Example: `api.example.com` → `us-east.api.example.com`
 
-## Resources
+6. **Microservice Patterns**
+   - Generates microservice-style names
+   - Example: `example.com` → `auth-service.example.com`, `user-api.example.com`
+
+### DevOps & Tooling Permutators
+
+7. **Internal Tooling**
+   - Adds common internal tool subdomains
+   - Example: `example.com` → `jenkins.internal.example.com`
+
+8. **Port Prefixing**
+   - Adds common port numbers
+   - Example: `api.example.com` → `8080.api.example.com`
+
+## 📋 Command Line Options
+
+```bash
+dnsgen [OPTIONS] FILENAME
+
+Options:
+  -l, --wordlen INTEGER  Min length of custom words (default: 6)
+  -w, --wordlist PATH    Path to custom wordlist
+  -f, --fast            Fast generation mode
+  -o, --output PATH     Output file path
+  -v, --verbose         Enable verbose logging
+  --help               Show this message and exit
+```
+
+## 🔧 Advanced Usage
+
+### Custom Wordlists
+
+DNSGen 2.0 supports commented wordlists for better organization:
+
+```text
+# Environment Names
+dev
+staging
+prod
+
+# Cloud Providers
+aws
+azure
+gcp
+
+# Tools and Services
+jenkins
+gitlab
+grafana
+```
+
+### Integration with MassDNS
+
+Get clean resolved domains:
+```bash
+# Generate and resolve
+dnsgen hosts.txt > wordlist.txt
+massdns -r resolvers.txt -o S wordlist.txt | grep -e ' A ' | \
+  cut -d 'A' -f 1 | rev | cut -d "." -f1 --complement | \
+  rev | sort | uniq > resolved_domains.txt
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+
+## 📚 Resources
 
 - [Subdomain Enumeration: 2019 Workflow](https://0xpatrik.com/subdomain-enumeration-2019/)
 - [Subdomain Enumeration: Doing it a Bit Smarter](https://0xpatrik.com/subdomain-enumeration-smarter/)
+- [Project Documentation](docs/README.md)
 
-## TO DO
+## 📜 License
 
-- Improve README
-- Tests
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Author
+## 🙏 Acknowledgments
 
-[Aleph Null s.r.o.](https://alephnull.sk)
+- Original concept by [Aleph Null s.r.o.](https://alephnull.sk)
+- Inspired by [altdns](https://github.com/infosec-au/altdns)
+- [massdns](https://github.com/blechschmidt/massdns) for DNS resolution
+
+## 📊 Project Status
+
+- ✅ Core functionality complete
+- 🏗️ Adding more permutation techniques
+- 📝 Improving documentation
+- 🧪 Adding tests
+
+---
+
+<p align="center">Made with ❤️ by the security community</p>

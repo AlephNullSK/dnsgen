@@ -1,18 +1,15 @@
 .PHONY: lint check dev lint-check
 
-check:
-	poetry run pre-commit run --all-files
+lint-check:
+	uv run ruff check .
+	uv run ruff format --check .
+	uv run mypy --show-error-codes --pretty dnsgen/
 
 lint:
-	poetry run black .
-	poetry run isort . --profile black
-
-lint-check:
-	python3 -m poetry run black . --check
-	python3 -m poetry run isort . --check-only --profile black
-	python3 -m poetry run flake8 .
+	bash .git/hooks/pre-commit
+	uv run ruff format ./dnsgen
+	uv run ruff check --fix ./dnsgen
 
 dev:
-	python3 -m pip install -U poetry
-	poetry install
-	poetry run pre-commit install
+	uv pip install . --extra dev
+	uv run pre-commit install

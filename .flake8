@@ -1,5 +1,0 @@
-[flake8]
-ignore = E203, E266, E501, W503, F403, F401, E731, B950, F841, B905
-max-line-length = 100
-exclude = __init__.py, ^site-packages/
-select = B,C,E,F,W,T4,B9
