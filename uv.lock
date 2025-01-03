@@ -98,7 +98,7 @@ name = "click"
 version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b9/2e/0090cbf739cee7d23781ad4b89a9894a41538e4fcf4c31dcdd705b78eb8b/click-8.1.8.tar.gz", hash = "sha256:ed53c9d8990d83c2a27deae68e4ee337473f6330c040a31d4225c9574d16096a", size = 226593 }
 wheels = [
@@ -125,7 +125,7 @@ wheels = [
 
 [[package]]
 name = "dnsgen"
-version = "2.0.0"
+version = "2.0.3"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
@@ -139,7 +139,6 @@ dev = [
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "ruff" },
-    { name = "setuptools" },
 ]
 
 [package.metadata]
@@ -155,7 +154,6 @@ dev = [
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pytest", specifier = ">=8.3.4" },
     { name = "ruff", specifier = ">=0.8.5" },
-    { name = "setuptools", specifier = ">=75.6.0" },
 ]
 
 [[package]]
@@ -472,15 +470,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/54/77/5c8072ec7afdfdf42c7a4019044486a2b6c85ee73617f8875ec94b977fed/ruff-0.8.5-py3-none-win32.whl", hash = "sha256:8710ffd57bdaa6690cbf6ecff19884b8629ec2a2a2a2f783aa94b1cc795139ed", size = 8802515 },
     { url = "https://files.pythonhosted.org/packages/bc/b6/47d2b06784de8ae992c45cceb2a30f3f205b3236a629d7ca4c0c134839a2/ruff-0.8.5-py3-none-win_amd64.whl", hash = "sha256:4020d8bf8d3a32325c77af452a9976a9ad6455773bcb94991cf15bd66b347e47", size = 9684231 },
     { url = "https://files.pythonhosted.org/packages/bf/5e/ffee22bf9f9e4b2669d1f0179ae8804584939fb6502b51f2401e26b1e028/ruff-0.8.5-py3-none-win_arm64.whl", hash = "sha256:134ae019ef13e1b060ab7136e7828a6d83ea727ba123381307eb37c6bd5e01cb", size = 9124741 },
-]
-
-[[package]]
-name = "setuptools"
-version = "75.6.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/43/54/292f26c208734e9a7f067aea4a7e282c080750c4546559b58e2e45413ca0/setuptools-75.6.0.tar.gz", hash = "sha256:8199222558df7c86216af4f84c30e9b34a61d8ba19366cc914424cdbd28252f6", size = 1337429 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/21/47d163f615df1d30c094f6c8bbb353619274edccf0327b185cc2493c2c33/setuptools-75.6.0-py3-none-any.whl", hash = "sha256:ce74b49e8f7110f9bf04883b730f4765b774ef3ef28f722cce7c273d253aaf7d", size = 1224032 },
 ]
 
 [[package]]

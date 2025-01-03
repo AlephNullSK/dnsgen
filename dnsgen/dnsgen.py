@@ -9,12 +9,11 @@ import re
 
 import tldextract
 from tldextract.tldextract import ExtractResult
+from dataclasses import field
 
 # Type aliases
 DomainPartsType = List[str]
 PermutatorFunc = Callable[[DomainPartsType], List[str]]
-
-from dataclasses import field
 
 
 @dataclass
@@ -97,8 +96,7 @@ class DomainGenerator:
         """Get the list of currently active permutators."""
         return self.fast_permutators if self.fast_mode else self.permutators
 
-    def generate(self, domains: List[str], wordlen: int = 5,
-                 fast_mode: bool = False) -> Iterator[str]:
+    def generate(self, domains: List[str], wordlen: int = 5, fast_mode: bool = False) -> Iterator[str]:
         """
         Generate domain permutations from provided domains.
 
@@ -139,11 +137,7 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
         # Filter out comments (lines starting with #) and empty lines
         lines = f.read().splitlines()
         # Filter out comments and empty lines
-        words = [
-            line.strip()
-            for line in lines
-            if line.strip() and not line.strip().startswith('#')
-        ]
+        words = [line.strip() for line in lines if line.strip() and not line.strip().startswith("#")]
 
     generator = DomainGenerator(words=words)
 
@@ -218,7 +212,7 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
                    "prod.api.example.com"
                    "test.api.example.com"
         """
-        environments = ['dev', 'staging', 'uat', 'prod', 'test']
+        environments = ["dev", "staging", "uat", "prod", "test"]
         domains = []
 
         for env in environments:
@@ -244,8 +238,8 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
                    "api-gcp.example.com"
                    ...
         """
-        cloud_terms = ['aws', 'azure', 'gcp', 'k8s', 'cloud']
-        service_terms = ['api', 'cdn', 'storage', 'auth', 'db']
+        cloud_terms = ["aws", "azure", "gcp", "k8s", "cloud"]
+        service_terms = ["api", "cdn", "storage", "auth", "db"]
 
         domains = []
         for term in cloud_terms:
@@ -269,10 +263,7 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
                    "ap-south.api.example.com"
                    "eu-central.api.example.com"
         """
-        regions = [
-            'us-east', 'us-west', 'eu-west', 'eu-central',
-            'ap-south', 'ap-northeast', 'sa-east', 'af-south'
-        ]
+        regions = ["us-east", "us-west", "eu-west", "eu-central", "ap-south", "ap-northeast", "sa-east", "af-south"]
         domains = []
 
         for region in regions:
@@ -296,8 +287,8 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
                    "auth-api.example.com"
                    "user-api.example.com"
         """
-        services = ['auth', 'user', 'payment', 'notification', 'order', 'inventory']
-        suffixes = ['service', 'svc', 'api', 'app']
+        services = ["auth", "user", "payment", "notification", "order", "inventory"]
+        suffixes = ["service", "svc", "api", "app"]
         domains = []
 
         for service in services:
@@ -322,8 +313,8 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
                    "gitlab.tools.example.com"
                    "monitoring.tools.example.com"
         """
-        tools = ['jenkins', 'gitlab', 'grafana', 'kibana', 'prometheus', 'monitoring', 'jira']
-        prefixes = ['internal', 'tools', 'admin']
+        tools = ["jenkins", "gitlab", "grafana", "kibana", "prometheus", "monitoring", "jira"]
+        prefixes = ["internal", "tools", "admin"]
         domains = []
 
         for tool in tools:
@@ -351,7 +342,7 @@ def create_generator(wordlist_path: Optional[str | pathlib.Path] = None) -> Doma
                    "port-8080.api.example.com"
                    "port-8443.api.example.com"
         """
-        ports = ['8080', '8443', '3000', '5000', '9000', '8888']
+        ports = ["8080", "8443", "3000", "5000", "9000", "8888"]
         domains = []
 
         for port in ports:

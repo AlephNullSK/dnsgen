@@ -17,11 +17,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from . import dnsgen
 
 # Configure logging with rich
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(message)s",
-    handlers=[RichHandler(rich_tracebacks=True)]
-)
+logging.basicConfig(level=logging.INFO, format="%(message)s", handlers=[RichHandler(rich_tracebacks=True)])
 logger = logging.getLogger("dnsgen")
 console = Console()
 
@@ -54,8 +50,7 @@ def setup_generator(wordlist: Optional[Path], wordlen: int, fast: bool) -> dnsge
         sys.exit(1)
 
 
-def process_domains(domains: Set[str], generator: dnsgen.DomainGenerator,
-                    wordlen: int, fast: bool) -> Set[str]:
+def process_domains(domains: Set[str], generator: dnsgen.DomainGenerator, wordlen: int, fast: bool) -> Set[str]:
     """
     Process input domains and generate variations.
 
@@ -69,9 +64,9 @@ def process_domains(domains: Set[str], generator: dnsgen.DomainGenerator,
         Set of generated domain variations
     """
     with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            console=console,
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
     ) as progress:
         task = progress.add_task("Generating domain variations...", total=None)
 
@@ -94,7 +89,7 @@ def write_output(domains: Set[str], output_file: Optional[Path]) -> None:
     """
     try:
         if output_file:
-            with output_file.open('w') as f:
+            with output_file.open("w") as f:
                 for domain in sorted(domains):
                     f.write(f"{domain}\n")
             logger.info(f"Results written to {output_file}")
@@ -145,12 +140,12 @@ def write_output(domains: Set[str], output_file: Optional[Path]) -> None:
     type=click.File(mode="r"),
 )
 def main(
-        wordlen: int,
-        wordlist: Optional[Path],
-        input_file: TextIO,
-        fast: bool,
-        output: Optional[Path],
-        verbose: bool,
+    wordlen: int,
+    wordlist: Optional[Path],
+    input_file: TextIO,
+    fast: bool,
+    output: Optional[Path],
+    verbose: bool,
 ) -> None:
     """
     DNSGen CLI main function.
